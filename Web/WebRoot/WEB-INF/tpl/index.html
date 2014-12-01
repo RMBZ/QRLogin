@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,user-scalable=yes">
+<meta http-equiv="refresh" content="500">
+<title>二维码登录</title>
+<link rel="stylesheet" type="text/css"
+	href="https://res.wx.qq.com/zh_CN/htmledition/style/login184f03.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://res.wx.qq.com/zh_CN/htmledition/style/comm20a876.css" />
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>  
+	setInterval("isScan()",3000);
+	
+    function qrLogin_2() {
+        dv_sacn_ok_tips.style.display="block";     
+        dv_scan_tips.style.display="none";
+
+    }
+    
+    function qrLogin_3() {
+        alert("登录了！");
+        alert("给Baidu贡献点儿流量！");
+        window.location.href="http://www.baidu.com"; 
+    }
+    
+    function qrLogin_4() {
+        alert("SX");
+        window.location.reload(); 
+    }
+    
+    function isScan() { 
+        var url="isLoginType/${session.qrId}"; 
+        $.ajaxSettings.async = false;  
+        var result;
+        $.getJSON(url,function(json){
+        	result = json.type;
+        });
+        console.log(result);
+        //alert(result);
+        switch(result)
+        {
+            case "1":
+                //未扫描
+                break;
+            case "2":
+                //扫描未点登录
+                qrLogin_2();
+                break;
+            case "3":
+                //点登录了
+                qrLogin_3();
+                break;
+            case "4":
+                //二维码失效
+                qrLogin_4();
+                break;
+        }
+    }    
+</script>
+</head>
+<body>
+
+	<div id="login_container" style="">
+		<div class="mask"
+			style="height:100%;width:100%;position:absolute;z-index:99;opacity:0.2;background-color:#000;display:none;"></div>
+		<div class="main">
+			<div class="loginPanel normalPanel">
+				<div class="title pngBackground">
+					<h2>二维码登录</h2>
+				</div>
+				<div class="waiting panelContent">
+					<div class="qrcodeContent" style="position:relative;">
+						<div class="qrcodePanel">
+							<img class="qrcode lightBorder" height="260" width="260"
+								id="loginQrCode" src="QrCode/${session.qrId}" />
+						</div>
+						<div id="guideTrigger"
+							style="position:absolute;z-index:9999;width:260px;height:100%;left:50%;top:0px;margin-left:-130px;"></div>
+					</div>
+					<div class="info">
+						<div id="dv_scan_tips" class="normlDesc loginTip pngBackground">
+							<div class="loginTipL pngBackground"></div>
+							<div class="loginTipR pngBackground"></div>
+							<p>请使用APP扫描二维码</p>
+						</div>
+
+						<div id="dv_sacn_ok_tips" class="successMsg msgBox">
+							<div class="msgBoxTop pngBackground"></div>
+							<div class="msgBoxMid pngBackground">
+								<div class="successMsgTipPic pngBackground"></div>
+								<h3>成功扫描</h3>
+								<p>请在手机点击确认以登录</p>
+							</div>
+							<div class="msgBoxBtm pngBackground"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<p class="recommend_wrp"></p>
+		<a class="icon_faq" href="#"><img
+			src="https://res.wx.qq.com/zh_CN/htmledition/images/spacer17ced3.gif"
+			onerror="reLoadImg(this)" /> </a>
+		<p class="webwx">xxx.com&nbsp;&nbsp;二维码登录网页版</p>
+	</div>
+</body>
+</html>
